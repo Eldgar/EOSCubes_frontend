@@ -16,9 +16,8 @@ const images = {
 
 export const TextureSelector = () => {
 	const [visible, setVisible] = useState(false)
-	const [ activeUser, setActiveUser ] = useStore((state) => [state.activeUser, state.setActiveUser])
-	const [activeTexture, setTexture, ual, saphireCube] = useStore((state) => [state.texture, state.setTexture, state.ual, state.saphireCube])
-	const activeAccount = ual.activeUser
+	const [activeTexture, setTexture, ual, saphireCube, rubyCube, portalCube] = useStore((state) => 
+	[state.texture, state.setTexture, state.ual, state.saphireCube, state.rubyCube, state.portalCube])
 	const {
 		dirt,
 		grass,
@@ -29,7 +28,6 @@ export const TextureSelector = () => {
 		ruby,
 		portal
 	} = useKeyboard()
-	if (saphireCube){
 		useEffect(() => {
 			const textures = {
 				dirt,
@@ -37,33 +35,24 @@ export const TextureSelector = () => {
 				glass,
 				wood,
 				log,
-				saphire,
-				ruby,
-				portal
 			}
+			if (saphireCube) {
+				textures.saphire = saphire;
+			  }
+			  
+			if (rubyCube) {
+				textures.ruby = ruby;
+			  }
+			  
+			if (portalCube) {
+				textures.portal = portal;
+			  }
 			const pressedTexture = Object.entries(textures).find(([k, v]) => v)
 			if (pressedTexture) {
 				setTexture(pressedTexture[0])
 			}
 		}, [setTexture, dirt, grass, glass, wood, log, saphire, ruby, portal])
-	} else {
-		useEffect(() => {
-			const textures = {
-				dirt,
-				grass,
-				glass,
-				wood,
-				log,
-				ruby,
-				portal,
-			}
-			const pressedTexture = Object.entries(textures).find(([k, v]) => v)
-			if (pressedTexture) {
-				setTexture(pressedTexture[0])
-			}
-		}, [setTexture, dirt, grass, glass, wood, log, ruby, portal])
 	
-	}
 	
 
 

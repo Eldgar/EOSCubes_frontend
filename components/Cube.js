@@ -70,7 +70,7 @@ export const Cube = ({ position, texture, username }) => {
 				color={isHovered ? 'grey' : 'white'}
 				map={activeTexture}
 				transparent={true}
-				opacity={(texture === 'glass' || texture === 'saphire' || texture === 'ruby' || texture === 'portal') ? 0.55 : 1}
+				opacity={(texture === 'glass' || texture === 'saphire' || texture === 'ruby' || texture === 'portal') ? 0.57 : 1}
 				attach={"material"}
 				/>
 		</mesh>

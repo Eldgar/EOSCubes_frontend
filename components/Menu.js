@@ -10,8 +10,8 @@ const Menu = (props) => {
     const [activeAuthenticator, setActiveAuthenticator] = useState(null)
 	const [userBalance, setUserBalance] = useState(null)
     const [rpc, setRpc] = useState(new JsonRpc(`https://api-jungle.eosarabia.net:443`))
-	const [saveWorld, resetWorld, accountName, ual, setUal, setSaphireCube, setAccountName] = useStore((state) => 
-	[state.saveWorld, state.resetWorld, state.accountName, state.ual, state.setUal, state.setSaphireCube, state.setAccountName])
+	const [saveWorld, resetWorld, accountName, ual, setUal, setSaphireCube, setRubyCube, setPortalCube, setAccountName] = useStore((state) => 
+	[state.saveWorld, state.resetWorld, state.accountName, state.ual, state.setUal, state.setSaphireCube,state.setRubyCube, state.setPortalCube, state.setAccountName])
 
 
 	//
@@ -74,8 +74,15 @@ const Menu = (props) => {
 		  })
 		  const data = await response.rows;
 		  for ( let i = 0; i < data.length; i++ ){
+			console.log(data[i])
 			if (data[i].idata === '{"name":"Saphire","img":"QmRnhvYNdUWEJ87BRkJ81Xie3PqnXnV3cYVrwFSUkzrWCR"}'){
 				setSaphireCube(true);
+			  }
+			if (data[i].idata === '{"name":"ruby","img":"QmURr5SiTvSDFu1iUt9VZsAkDv9ZfW5WCveiyKw5Qbxrx4"}'){
+				setRubyCube(true);
+			  }
+			if (data[i].idata === '{"name":"portal","img":"QmaRWTgJH1g5bucY24gBZVps6biPLfEkwFFHJ5KuaaWRTv"}'){
+				setPortalCube(true);
 			  }
 		  }
 		  console.log(data)
