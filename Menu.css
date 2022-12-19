@@ -1,0 +1,26 @@
+h2 {
+    font-family: 'futura';
+    margin: 20px;
+    padding: 10px;
+    font-size: 40px;
+}
+
+h6 {
+    margin: 10px;
+    font-size: 24px;
+}
+
+button {
+    background-color: #000080;
+    color: white;
+    margin: 10px 50px 20px 10px;
+    font-size: 20px;
+}
+
+button:hover {
+    background-color: #00b8d4;
+}
+
+.top {
+    display: flex;
+}
