@@ -131,15 +131,15 @@ const withdrawTokens = async (amount) => {
 			}],
 			data: {
 				username: accountName,
-				quantity: amount + " EOS"
+				quantity: amount + " WAX"
 			}
 		}],
     }
 	try {
 		await activeUser.signTransaction(transaction, {broadcast: true})
 	  }
-	  catch {
-		console.log('error');
+	  catch (error) {
+		console.log(error);
 	}
 }
 
@@ -155,8 +155,8 @@ const depositTokens = async (amount) => {
 			}],
 			data: {
 				from: accountName,
-				to: 'eldgarcube11',
-				quantity: amount + " EOS",
+				to: 'eldgarcube12',
+				quantity: amount + " WAX",
 				memo: 'cubes contract'
 			}
 		}]
@@ -164,8 +164,8 @@ const depositTokens = async (amount) => {
 	try {
 		await activeUser.signTransaction(transaction, {broadcast: true})
 	  }
-	  catch {
-		console.log('error');
+	  catch(error) {
+		console.log(error);
 	  }
 }
 
@@ -180,8 +180,8 @@ const depositTokens = async (amount) => {
 			{userBalance ?
 			<div className="balance" >
 					<div className="deposit_withdraw">
-						<button onClick={() => depositTokens("10.0000")}>Deposit</button>
-						<button onClick={() => withdrawTokens("10.0000")}>Withdraw</button>
+						<button onClick={() => depositTokens("10.00000000")}>Deposit</button>
+						<button onClick={() => withdrawTokens("10.0000000")}>Withdraw</button>
 					</div>
 				<h6>{userBalance}</h6>
 			</div> : <h6></h6>}

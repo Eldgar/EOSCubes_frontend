@@ -98,11 +98,12 @@ const saveToBlockchain = async (ual, cubes) => {
 		  }
 		  })
 	}
+	console.log(transaction)
     try {
       await activeUser.signTransaction(transaction, {broadcast: true})
     }
-    catch {
-      console.log('error');
+    catch (error){
+      console.log(error);
     }
   }
 
