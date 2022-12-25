@@ -9,7 +9,7 @@ import { useState, useEffect } from 'react'
 const Menu = (props) => {
     const [activeAuthenticator, setActiveAuthenticator] = useState(null)
 	const [userBalance, setUserBalance] = useState(null)
-    const [rpc, setRpc] = useState(new JsonRpc(`https://api-jungle.eosarabia.net:443`))
+    const [rpc, setRpc] = useState(new JsonRpc(`https://waxtest.api.eosnation.io:443`))
 	const [saveWorld, resetWorld, accountName, ual, setUal, setSaphireCube, setRubyCube, setPortalCube, setAccountName] = useStore((state) => 
 	[state.saveWorld, state.resetWorld, state.accountName, state.ual, state.setUal, state.setSaphireCube,state.setRubyCube, state.setPortalCube, state.setAccountName])
 
@@ -63,25 +63,28 @@ const Menu = (props) => {
 		  userId()
 
 		const getNFTs = async() => {
-			const response = await new JsonRpc(`https://api-jungle.eosarabia.net:443`).get_table_rows({
+			const response = await new JsonRpc(`https://waxtest.api.eosnation.io:443`).get_table_rows({
 			json: true,
-			code: 'simpleassets',
+			code: 'atomicassets',
 			scope: accountName,
-			table: 'sassets',
+			table: 'assets',
 			limit: 10000,
 			reverse: false,
 			show_payer: false
 		  })
 		  const data = await response.rows;
 		  for ( let i = 0; i < data.length; i++ ){
-			console.log(data[i])
-			if (data[i].idata === '{"name":"Saphire","img":"QmRnhvYNdUWEJ87BRkJ81Xie3PqnXnV3cYVrwFSUkzrWCR"}'){
+			console.log(data[i].template_id)
+			if (data[i].template_id === 604079){
+				console.log('saphire')
 				setSaphireCube(true);
 			  }
-			if (data[i].idata === '{"name":"ruby","img":"QmURr5SiTvSDFu1iUt9VZsAkDv9ZfW5WCveiyKw5Qbxrx4"}'){
+			if (data[i].template_id === 604080){
+				console.log('ruby')
 				setRubyCube(true);
 			  }
-			if (data[i].idata === '{"name":"portal","img":"QmaRWTgJH1g5bucY24gBZVps6biPLfEkwFFHJ5KuaaWRTv"}'){
+			if (data[i].template_id === 604081){
+				console.log('portal')
 				setPortalCube(true);
 			  }
 		  }
@@ -90,10 +93,10 @@ const Menu = (props) => {
 		}
 		getNFTs()
 		const  fetchData = async() => {
-			const response = await new JsonRpc(`https://api-jungle.eosarabia.net:443`).get_table_rows({
+			const response = await new JsonRpc(`https://waxtest.api.eosnation.io:443`).get_table_rows({
 			json: true,
-			code: 'eldgarcube11',
-			scope: 'eldgarcube11',
+			code: 'eldgarcube12',
+			scope: 'eldgarcube12',
 			table: 'balances',
 			limit: 10000,
 			reverse: false,
@@ -120,7 +123,7 @@ const withdrawTokens = async (amount) => {
 	console.log(activeUser)
     const transaction = {
     	actions: [{
-			account: 'eldgarcube11',
+			account: 'eldgarcube12',
 			name: 'withdraw',
 			authorization: [{
 				actor: accountName,

@@ -5,7 +5,7 @@ import { useState, useEffect } from 'react'
 
 
 
-const contractName = 'eldgarcubes5'
+const contractName = 'eldgarcube12'
 
 
 const getLocalStorage = (key) => JSON.parse(window.localStorage.getItem(key))
@@ -15,7 +15,7 @@ const saveToBlockchain = async (ual, cubes) => {
 	const newCubes = [];
 	const removedCubesId = [];
 	//console.log(removedCubesId)
-	const bCubes = await new JsonRpc(`https://api-jungle.eosarabia.net:443`).get_table_rows({
+	const bCubes = await new JsonRpc(`https://waxtest.api.eosnation.io:443`).get_table_rows({
 			json: true,
 			code: contractName,
 			scope: contractName,
