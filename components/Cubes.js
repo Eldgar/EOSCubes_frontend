@@ -11,7 +11,7 @@ export const Cubes = () => {
 	const [table, setTable] = useState(false)
 	useEffect(()=>{
 		const  fetchData = async() => {
-			const response = await new JsonRpc(`https://waxtest.api.eosnation.io:443`).get_table_rows({
+			const response = await new JsonRpc(`https://waxtest.defibox.xyz:443`).get_table_rows({
 			json: true,
 			code: contractName,
 			scope: contractName,
@@ -35,7 +35,8 @@ export const Cubes = () => {
 	])
 	//console.log(cubes)
 	//console.log(typeof(cubes))
-	if (true){
+	
+	if (table){
 		setLocalStorage('cubes', table)
 		return cubes.map(({username, key, pos, texture}) => {
 			return (

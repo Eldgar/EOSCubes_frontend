@@ -15,7 +15,7 @@ const saveToBlockchain = async (ual, cubes) => {
 	const newCubes = [];
 	const removedCubesId = [];
 	//console.log(removedCubesId)
-	const bCubes = await new JsonRpc(`https://waxtest.api.eosnation.io:443`).get_table_rows({
+	const bCubes = await new JsonRpc(`https://waxtest.defibox.xyz:443`).get_table_rows({
 			json: true,
 			code: contractName,
 			scope: contractName,
@@ -65,6 +65,22 @@ const saveToBlockchain = async (ual, cubes) => {
     const transaction = {
       actions: [],
     }
+	for (let i = 0; i < removedCubesId.length; i++){
+		transaction.actions.push({
+			account: contractName,
+			name: 'removecube',
+			authorization: [{
+			  actor: accountName,
+			  permission: 'active',
+	
+			}],
+		  data: {
+			id: removedCubesId[i],
+			username: accountName,
+
+		  }
+		  })
+	}
 	for (let i = 0; i < newCubes.length; i++ ){
 		transaction.actions.push({
 			account: contractName,
@@ -82,22 +98,7 @@ const saveToBlockchain = async (ual, cubes) => {
 		  }
 		  })
 	}
-	for (let i = 0; i < removedCubesId.length; i++){
-		transaction.actions.push({
-			account: contractName,
-			name: 'removecube',
-			authorization: [{
-			  actor: accountName,
-			  permission: 'active',
 	
-			}],
-		  data: {
-			id: removedCubesId[i],
-			username: accountName,
-
-		  }
-		  })
-	}
 	console.log(transaction)
     try {
       await activeUser.signTransaction(transaction, {broadcast: true})
@@ -109,7 +110,20 @@ const saveToBlockchain = async (ual, cubes) => {
 
 export const useStore = create((set) => ({
 	
+	loading: true,
+	setLoading: (loading) => 
+		set((state)=> ({
+			...state,
+			loading,
+		})),
+		
 	ual: {},
+	setUal: (ual) => 
+	set((state)=> ({
+		...state,
+		ual,
+	})),
+
 	accountName: null,
 	texture: 'dirt',
 
@@ -136,12 +150,8 @@ export const useStore = create((set) => ({
 		})),
 
 
-	cubes: getLocalStorage('cubes') || [],
-	setUal: (ual) => 
-		set((state)=> ({
-			...state,
-			ual,
-		})),
+	cubes: getLocalStorage('cubes'),
+	
 	addCube: (x, y, z, username) => {
 		//console.log(JSON.parse(window.localStorage.getItem('cubes')))
 		console.log(username)

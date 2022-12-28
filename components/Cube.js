@@ -7,12 +7,14 @@ import * as textures from "../images/textures"
 export const Cube = ({ position, texture, username }) => {
 	const [accountName] = useStore((state) => [state.accountName])
 	const [isHovered, setIsHovered] = useState(false)
-	const [ref] = useBox(() => ({
-		type: 'static',
-		position,
-		collisionFilterGroup: ((texture === 'portal') && (username === accountName) ? 0x0004 : 0x0003),
-		collisionFilterMask: ((texture === 'portal') && (username === accountName) ? 0x0004 : 0x0003),
-	}))
+	
+		const [ref] = useBox(() => ({
+			type: 'static',
+			position,
+			collisionFilterGroup: ((texture === 'portal') && (username === accountName) ? 0x0004 : 0x0003),
+			collisionFilterMask: ((texture === 'portal') && (username === accountName) ? 0x0004 : 0x0003),
+		}))
+	
 	const [addCube, removeCube] = useStore((state) => [state.addCube, state.removeCube])
 
 	const activeTexture = textures[texture + 'Texture']
