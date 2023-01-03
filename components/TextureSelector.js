@@ -28,7 +28,7 @@ export const TextureSelector = () => {
 		ruby,
 		portal
 	} = useKeyboard()
-		useEffect(() => {
+	useEffect(() => {
 			const textures = {
 				dirt,
 				grass,

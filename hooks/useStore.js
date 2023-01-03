@@ -1,7 +1,6 @@
 import create from 'zustand'
 import { nanoid } from 'nanoid'
 import { JsonRpc } from 'eosjs'
-import { useState, useEffect } from 'react'
 
 
 
@@ -108,8 +107,7 @@ const saveToBlockchain = async (ual, cubes) => {
     }
   }
 
-export const useStore = create((set) => ({
-	
+ export const useStore = create((set, props) => ({
 	loading: true,
 	setLoading: (loading) => 
 		set((state)=> ({
@@ -125,6 +123,12 @@ export const useStore = create((set) => ({
 	})),
 
 	accountName: null,
+	userBalance: 0,
+	setUserBalance: (userBalance) => 
+	set((state)=> ({
+		...state,
+		userBalance,
+	})),
 	texture: 'dirt',
 
 	//set state for NFT cubes enable/disable

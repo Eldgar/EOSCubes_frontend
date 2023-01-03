@@ -8,12 +8,9 @@ import { useState, useEffect } from 'react'
 
 const Menu = (props) => {
     const [activeAuthenticator, setActiveAuthenticator] = useState(null)
-	const [userBalance, setUserBalance] = useState(null)
     const [rpc, setRpc] = useState(new JsonRpc(`https://waxtest.defibox.xyz:443`))
-	const [saveWorld, resetWorld, accountName, ual, setUal, setSaphireCube, setRubyCube, setPortalCube, setAccountName] = useStore((state) => 
-	[state.saveWorld, state.resetWorld, state.accountName, state.ual, state.setUal, state.setSaphireCube,state.setRubyCube, state.setPortalCube, state.setAccountName])
-
-
+	const [saveWorld, resetWorld, accountName, userBalance, ual, setUal, setAccountName] = useStore((state) => 
+	[state.saveWorld, state.resetWorld, state.accountName, state.userBalance, state.ual, state.setUal, state.setAccountName])
 
 	
 const withdrawTokens = async (amount) => {
@@ -42,6 +39,20 @@ const withdrawTokens = async (amount) => {
 	}
 }
 
+const login = () => {
+	console.log(props.ual)
+	//console.log("login")
+	ual.showModal
+	//ual.showModal
+	//ual.showModal()
+	//console.log(ual.showModal)
+}
+
+const logout = () => {
+	props.ual.logout()
+	setLoading(true)
+}
+
 const depositTokens = async (amount) => {
 	const activeUser = ual.activeUser
 	const transaction = {
@@ -62,9 +73,10 @@ const depositTokens = async (amount) => {
     }
 	try {
 		console.log(ual)
-		console.log(activeUser)
-		console.log(activeUser.chainId)
-		await ual.activeUser.signTransaction(transaction, {broadcast: true})
+		//console.log(activeUser)
+		//console.log(activeUser.chainId)
+		//console.log(activeUser.accountName)
+		await props.ual.activeUser.signTransaction(transaction, {broadcast: true})
 	  }
 	  catch(error) {
 		console.log(error);
@@ -88,7 +100,7 @@ const depositTokens = async (amount) => {
 			</div> : <h6></h6>}
 
 			<div className="log">
-				{!accountName ? <button onClick={props.ual.showModal}>Login</button> : <button onClick={props.ual.logout}>Logout</button>}
+				{!accountName ? <button onClick={props.ual.showModal}>Login</button> : <button onClick={logout}>Logout</button>}
 				<h6></h6>
 			</div>
 			

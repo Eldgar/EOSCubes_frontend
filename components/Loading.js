@@ -1,24 +1,21 @@
-import { useStore } from "../hooks/useStore"
 import * as React from 'react'
 import { JsonRpc } from 'eosjs'
 import { withUAL } from 'ual-reactjs-renderer/dist/components/provider/withUAL';
 import { useState, useEffect } from 'react'
-import CircleLoader from "react-spinners/ClipLoader";
-
+import { useStore } from '../hooks/useStore'
 
 const Loading = (props) => {
-
-    const [activeAuthenticator, setActiveAuthenticator] = useState(null)
-	const [userBalance, setUserBalance] = useState(null)
-    const [rpc, setRpc] = useState(new JsonRpc(`https://waxtest.defibox.xyz:443`))
-	const [loading, setLoading, accountName, ual, setUal, setSaphireCube, setRubyCube, setPortalCube, setAccountName] = useStore((state) => 
-	[state.loading, state.setLoading, state.accountName, state.ual, state.setUal, state.setSaphireCube,state.setRubyCube, state.setPortalCube, state.setAccountName])
-
+	const [username, setUsername] = useState('')
+	const [ruby, setRuby] = useState(false)
+	const [saphire, setSaphire] = useState(false)
+	const [portal, setPortal] = useState(false)
+	const [balance, setBalance] = useState(0)
+	const [accountName, setAccountName, setSaphireCube, setRubyCube, setPortalCube, setUserBalance, setLoading] = useStore((state) => 
+	[state.accountName, state.setAccountName, state.setSaphireCube, state.setRubyCube, state.setPortalCube, state.setUserBalance, state.setLoading])
+	const setLocalStorage = (key, value) => window.localStorage.setItem(key, JSON.stringify(value))
+	const getLocalStorage = (key) => JSON.parse(window.localStorage.getItem(key))
+    
 	
-	function timeout(ms){
-		return new Promise((resolve) => setTimeout(resolve, ms));
-	}
-
 	//
 	const char_to_symbol = (c) => {
 		if (typeof c == 'string') c = c.charCodeAt(0);
@@ -50,105 +47,101 @@ const Loading = (props) => {
 		return n.toString();
 	};
 
+	const getNFTs = async() => {
+		const response = await new JsonRpc(`https://waxtest.eosdac.io:443`).get_table_rows({
+		json: true,
+		code: 'atomicassets',
+		scope: username,
+		table: 'assets',
+		limit: 10000,
+		reverse: false,
+		show_payer: false
+	  })
+	  const data = await response.rows;
+	  for ( let i = 0; i < data.length; i++ ){
+		console.log(data[i].template_id)
+		if (data[i].template_id === 604079){
+			console.log('saphire')
+			setSaphire(true);
+		  }
+		if (data[i].template_id === 604080){
+			console.log('ruby')
+			setRuby(true);
+		  }
+		if (data[i].template_id === 604081){
+			console.log('portal')
+			setPortal(true);
+		  }
+	  }
+	  console.log(data)
+	}
 
+	const  fetchData = async() => {
+		console.log(" is the balance")
+		const response = await new JsonRpc(`https://waxtest.eosdac.io:443`).get_table_rows({
+		json: true,
+		code: 'eldgarcube12',
+		scope: 'eldgarcube12',
+		table: 'balances',
+		limit: 10000,
+		reverse: false,
+		show_payer: false
+	  })
+	  const data = await response.rows
+	  for (let i = 0; i < data.length; i++){
+		if (data[i].user === nameToUint64(username)){
+			setBalance(data[i].balance)
+		} 
+	  }
+	  //console.log("no user found")
+	  
+	}
 
-	useEffect(() => { 
-		const userId = async() => {
-			const ual = await props.ual
-			const activeUser = ual.activeUser
-			const username = ual.activeUser.accountName
+	const logout = () => {
+		props.ual.logout();
+		setAccountName('')
+		counter = 0;
+		console.log(getLocalStorage('anchor-link-.ldgar..raft-list')[0].auth.actor)
+	}
+
+	const enter = () => {
+		setAccountName(username)
+		setRubyCube(ruby)
+		setSaphireCube(saphire)
+		setPortalCube(portal)
+		setUserBalance(balance)
+		setTimeout(() =>{
+			setLoading(false)
+		}, 500)
+	}
+
+	let counter = 0;
+		useEffect(() => {
+			if (counter < 4){
+				console.log(props.ual.activeUser)
+				if (props.ual.activeUser && getLocalStorage('anchor-link-.ldgar..raft-list')[0].auth.actor){
+					setUsername(getLocalStorage('anchor-link-.ldgar..raft-list')[0].auth.actor)
+					fetchData()
+					getNFTs()
+					console.log(getLocalStorage('anchor-link-.ldgar..raft-list')[0].auth.actor)
+					
+				}
+			counter++
+			console.log(counter)
 			console.log(username)
-			const activeAuthenticator = await props.ual.activeAuthenticator
-			
-			setAccountName(username)
-			//setActiveUser(activeUser)
-			console.log(accountName + 'testing')
-			setActiveAuthenticator(activeAuthenticator)
-			await timeout(4000)
-			setUal(ual);
-			setLoading(false)
-			
-		}
-		userId()
-		  
-		  console.log(ual)
-		  
-		  
-		  
-	 },[props.ual])
-
-	useEffect(() => {
-		if(accountName){
-			const getNFTs = async() => {
-				const response = await new JsonRpc(`https://waxtest.defibox.xyz:443`).get_table_rows({
-				json: true,
-				code: 'atomicassets',
-				scope: accountName,
-				table: 'assets',
-				limit: 10000,
-				reverse: false,
-				show_payer: false
-			  })
-			  const data = await response.rows;
-			  for ( let i = 0; i < data.length; i++ ){
-				console.log(data[i].template_id)
-				if (data[i].template_id === 604079){
-					console.log('saphire')
-					setSaphireCube(true);
-				  }
-				if (data[i].template_id === 604080){
-					console.log('ruby')
-					setRubyCube(true);
-				  }
-				if (data[i].template_id === 604081){
-					console.log('portal')
-					setPortalCube(true);
-				  }
-			  }
-			  await timeout(3000);
-			  console.log(data)
-			  
 			}
-			getNFTs()
-			
-			const  fetchData = async() => {
-				const response = await new JsonRpc(`https://waxtest.defibox.xyz:443`).get_table_rows({
-				json: true,
-				code: 'eldgarcube12',
-				scope: 'eldgarcube12',
-				table: 'balances',
-				limit: 10000,
-				reverse: false,
-				show_payer: false
-			  })
-			  const data = await response.rows
-			  for (let i = 0; i < data.length; i++){
-				if (data[i].user === nameToUint64(accountName)){
-					setUserBalance(data[i].balance)
-					return
-				} 
-			  }
-			  //console.log("no user found")
-			  await timeout(3000);
-			}
-			fetchData()
-			setLoading(false)
-		}
-	},[accountName])
-
+		
+		}, [counter, props.ual])
 
   return (
     <div className="App">
-        <h2>Loading...</h2>
-        <CircleLoader
-          color={"#FF7AF4"}
-          loading={loading}
-          size={375}
-    />
-    <h3>Controls</h3>
-      <p>Move: WASD</p>
-      <p>Select Blocks: 1, 2, 3, 4, 5, 6, 7, 8</p>
-      <p>Click the screen to begin and esc to select buttons</p> 
+        <h2>{username}</h2>
+		<button onClick={enter}>Enter</button>
+		{ username ? <button onClick={logout}>Logout</button> : <button onClick={props.ual.showModal}>Login</button> }
+    	<h3>Controls</h3>
+      	<p>Move: WASD</p>
+      	<p>Select Blocks: 1, 2, 3, 4, 5, 6, 7, 8</p>
+      	<p>Click the screen to begin and esc to select buttons</p> 
     </div>
   )
 }
