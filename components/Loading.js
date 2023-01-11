@@ -10,9 +10,9 @@ const Loading = (props) => {
 	const [saphire, setSaphire] = useState(false)
 	const [portal, setPortal] = useState(false)
 	const [balance, setBalance] = useState(0)
-	const [accountName, setAccountName, setSaphireCube, setRubyCube, setPortalCube, setUserBalance, setLoading] = useStore((state) => 
-	[state.accountName, state.setAccountName, state.setSaphireCube, state.setRubyCube, state.setPortalCube, state.setUserBalance, state.setLoading])
-	const setLocalStorage = (key, value) => window.localStorage.setItem(key, JSON.stringify(value))
+	const [setAccountName, setUal, setSaphireCube, setRubyCube, setPortalCube, setUserBalance, setLoading] = useStore((state) => 
+	[state.setAccountName, state.setUal, state.setSaphireCube, state.setRubyCube, state.setPortalCube, state.setUserBalance, state.setLoading])
+	//const setLocalStorage = (key, value) => window.localStorage.setItem(key, JSON.stringify(value))
 	const getLocalStorage = (key) => JSON.parse(window.localStorage.getItem(key))
     
 	
@@ -78,12 +78,12 @@ const Loading = (props) => {
 
 	const  fetchData = async() => {
 		console.log(" is the balance")
-		const response = await new JsonRpc(`https://waxtest.eosdac.io:443`).get_table_rows({
+		const response = await new JsonRpc(`https://waxtest.api.eosnation.io`).get_table_rows({
 		json: true,
 		code: 'eldgarcube12',
 		scope: 'eldgarcube12',
 		table: 'balances',
-		limit: 10000,
+		limit: 3000,
 		reverse: false,
 		show_payer: false
 	  })
@@ -105,6 +105,7 @@ const Loading = (props) => {
 	}
 
 	const enter = () => {
+		setUal(props.ual)
 		setAccountName(username)
 		setRubyCube(ruby)
 		setSaphireCube(saphire)
@@ -112,7 +113,7 @@ const Loading = (props) => {
 		setUserBalance(balance)
 		setTimeout(() =>{
 			setLoading(false)
-		}, 500)
+		}, 600)
 	}
 
 	let counter = 0;

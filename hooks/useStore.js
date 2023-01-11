@@ -8,8 +8,10 @@ const contractName = 'eldgarcube12'
 
 
 const getLocalStorage = (key) => JSON.parse(window.localStorage.getItem(key))
-const setLocalStorage = (key, value) => window.localStorage.setItem(key, JSON.stringify(value))
-const saveToBlockchain = async (ual, cubes) => {
+//const setLocalStorage = (key, value) => window.localStorage.setItem(key, JSON.stringify(value))
+/*const saveToBlockchain = async (ual, cubes) => {
+	const [accountName, setAccountName] = useStore((state) => 
+	[state.accountName, state.setAccountName])
 	//console.log(cubes)
 	const newCubes = [];
 	const removedCubesId = [];
@@ -58,9 +60,6 @@ const saveToBlockchain = async (ual, cubes) => {
 		}
 	}
 	console.log(newCubes)
-	console.log(ual.activeUser)
-	const accountName = ual.activeUser.accountName
-	const activeUser = ual.activeUser
     const transaction = {
       actions: [],
     }
@@ -106,7 +105,7 @@ const saveToBlockchain = async (ual, cubes) => {
       console.log(error);
     }
   }
-
+*/
  export const useStore = create((set, props) => ({
 	loading: true,
 	setLoading: (loading) => 
@@ -194,9 +193,8 @@ const saveToBlockchain = async (ual, cubes) => {
 	saveWorld: () => {
 		set((prev) => {
 		
-			setLocalStorage('cubes', prev.cubes)
+			//setLocalStorage('cubes', prev.cubes)
 			saveToBlockchain(prev.ual, prev.cubes)
-			console.log(prev.cubes.length)
 		})
 	},
 	resetWorld: () => {

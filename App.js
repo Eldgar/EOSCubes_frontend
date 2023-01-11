@@ -22,7 +22,6 @@ function App() {
   const [loading, setLoading] = useStore((state) => 
 	[state.loading, state.setLoading])
 
-
   const ourNetwork = {
     chainId: "f16b1833c747c43682f4386fca9cbb327929334a762755ebec17f6f23c9b8a12",
     rpcEndpoints: [{ protocol: 'https', host: "waxtest.defibox.xyz", port: '443' }]
@@ -50,8 +49,7 @@ function App() {
     requestStatus: false
   })*/
   return (
-      loading ?
-
+    loading ?
     <UALProvider
       chains = {[ourNetwork]}
       authenticators={[anchor]}
@@ -59,7 +57,7 @@ function App() {
       ourNetwork={(ourNetwork)}>
       <Loading />
     </UALProvider>
-    :
+  :
     <>
       <Canvas>
         <Sky sunPosition={[100, 120, 25]} />
